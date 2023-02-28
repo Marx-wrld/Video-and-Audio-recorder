@@ -26,7 +26,7 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  place-items: start;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -66,4 +66,28 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.button-flex{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.audio-controls, .video-controls{
+  margin-bottom: 20px;
+}
+
+.audio-player, .video-player{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.live-player{
+  height: 200px;
+  width: 4000px;
+  border: 1px solid #646cff;
+  margin-bottom: 30px;
 }

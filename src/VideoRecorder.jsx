@@ -1,5 +1,10 @@
 import { useState, useRef} from "react";
 
+
+//similar to the audiorecorder the videorecorder, the code block below also;
+// declares the UI for the video recorder components
+//receives microphone permissions from the browser using the getCameraPermission function
+//sets the MediaStream received from the getUserMedia method to the stream state variable
 const VideoRecorder = () => {
     const [Permission, setPermission] = useState(false);
     const [stream, setStream] = useState(null);

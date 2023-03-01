@@ -1,34 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import "./App.css";
+import { useState, useRef } from "react";
+import VideoRecorder from "../src/VideoRecorder";
+import AudioRecorder from "../src/AudioRecorder";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App = () => {
+  let [recordOption, setRecordOption] = useState("video");
+  const toggleRecordOption = (type) => {
+    return () => {
+      setRecordOption(type);
+    };
+  };
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div>
+      <h1>React Media Recorder</h1>
+      <div className="button-flex">
+        <button onClick={toggleRecordOption("video")}>
+          Record Video
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+        <button onClick={toggleRecordOption("audio")}>
+          Record Audio
+        </button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <div>
+      {recordOption === "video" ? <VideoRecorder/> : <AudioRecorder/>}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

@@ -4,12 +4,18 @@ const mimeType = "audio/webm";
 
 const AudioRecorder = () => {
 
-    const [permission, setPermission] = useState(false); //uses a boolean value to indicate whether user permission has been given
-    const mediaRecorder = useRef(null)//holds the data from creating a new MediaRecorder object, given a mediastream to record
-    const [recordingStatus, setRecordingStatus] = useState("inactive");//sets the current recording status of the recorder. The possible values are recording, inactive and paused
-    const [stream, setStream] = useState(null); //contains the mediastream received from the getusermedia method
-    const [audioChunks, setAudioChunks] = useState([]);//contains encoded chunks of the audio recording
-    const [audio, setAudio] = useState(null); //contains a blob URL of the finished audio recording
+    const [permission, setPermission] = useState(false); 
+    //uses a boolean value to indicate whether user permission has been given
+    const mediaRecorder = useRef(null)
+    //holds the data from creating a new MediaRecorder object, given a mediastream to record
+    const [recordingStatus, setRecordingStatus] = useState("inactive");
+    //sets the current recording status of the recorder. The possible values are recording, inactive and paused
+    const [stream, setStream] = useState(null); 
+    //contains the mediastream received from the getusermedia method
+    const [audioChunks, setAudioChunks] = useState([]);
+    //contains encoded chunks of the audio recording
+    const [audio, setAudio] = useState(null); 
+    //contains a blob URL of the finished audio recording
 
     const getMicrophonePermission = async () => {
 
@@ -36,9 +42,32 @@ const AudioRecorder = () => {
         setRecordingStatus("recording");
         //create new Media recorder instance using the stream
         const media = new MediaRecorder(stream, { type: mimeType});
-        //set the Media Recorder i
-    }
+        //set the Media Recorder instance to the MediaRecorder ref
+        mediaRecorder.current = media;
+        //invokes the start method to start the recording process
+        mediaRecorder.current.start();
+        let localAudioChunks = [];
+        mediaRecorder.current.ondataavailable = (event) => {
+            if (typeof event.data === "undefined") return;
+            if (event.data.size === 0) return;
+            localAudioChunks.push(event.data);
+        };
+        setAudioChunks(localAudioChunks);
+    };
 
+    const stopRecording = () => {
+        setRecordingStatus("inactive");
+        //stops the recording instance
+        mediaRecorder.current.stop();
+        mediaRecorder.current.onstop = () => {
+            //creates a blob file from the audiochunks data
+            const audioBlob = new Blob(audioChunks, { type: mimeType});
+            //creates a playable URL from the blob file
+            const audioUrl = URL.createObjectURL(audioBlob);
+            setAudio(audioUrl);
+            setAudioChunks([]);
+        };
+    };
 
     return (
         <div>
@@ -50,14 +79,19 @@ const AudioRecorder = () => {
                             Get Microphone
                         </button>
                     ): null}
-                    {permission ? (
-                        <button type="button">
-                            Record
+                    {permission && recordingStatus === "inactive" ? (
+                        <button onClick={startRecording} type="button">
+                           Start Recording
+                        </button>
+                    ): null}
+                    {recordingStatus === "recording" ? (
+                        <button onClick={stopRecording} type=" button">
+                            Stop Recording
                         </button>
                     ): null}
         </div>
-        </main>
-        </div>
+            </main>
+                 </div>
     )
 };
 export default AudioRecorder;

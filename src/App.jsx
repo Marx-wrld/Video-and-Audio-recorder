@@ -6,6 +6,7 @@ import AudioRecorder from "../src/AudioRecorder";
 
 const App = () => {
   let [recordOption, setRecordOption] = useState("video");
+ 
   const toggleRecordOption = (type) => {
     return () => {
       setRecordOption(type);
@@ -13,7 +14,7 @@ const App = () => {
   };
   return (
     <div>
-      <h1>React Media Recorder</h1>
+      <h1>Media Recorder</h1>
       <div className="button-flex">
         <button onClick={toggleRecordOption("video")}>
           Record Video

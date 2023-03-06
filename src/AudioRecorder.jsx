@@ -86,20 +86,23 @@ const AudioRecorder = () => {
                     ): null}
                     {recordingStatus === "recording" ? (
                         <button onClick={stopRecording} type=" button">
-                            Stop Recording
+                          Stop Recording
                         </button>
                     ): null} 
-                    {audio ? (
+                </div> 
+            
+            {audio ? (
                 <div className="audio-container">
                     <audio src={audio} controls></audio>
                     <a download href={audio}>
                         Download Recording
                     </a>
                 </div>
+
                 ) : null}
-        </div>
+        
             </main>
-                 </div>
-    )
+        </div>
+    );
 };
 export default AudioRecorder;

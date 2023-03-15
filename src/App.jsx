@@ -2,6 +2,7 @@ import "./App.css";
 import { useState, useRef } from "react";
 import VideoRecorder from "../src/VideoRecorder";
 import AudioRecorder from "../src/AudioRecorder";
+import { BsFillMoonStarsFill } from "react-icons/bs";
 
 const App = () => {
   let [recordOption, setRecordOption] = useState("video");
@@ -11,9 +12,19 @@ const App = () => {
       setRecordOption(type);
     };
   };
+  const [darkMode, setDarkMode] = useState(false);
+  
   return (
     <div>
-      <h1>Media Recorder</h1>
+      <div className={darkMode ? "" : "dark"}>
+        <ul>
+          <li>
+            <BsFillMoonStarsFill
+              onClick={() => setDarkMode(!darkMode)}
+              className=" cursor-pointer text-2xl"
+            />
+          </li>
+          </ul>
       <div className="button-flex">
         <button onClick={toggleRecordOption("video")}>
           Record Video
@@ -25,6 +36,7 @@ const App = () => {
       <div>
       {recordOption === "video" ? <VideoRecorder/> : <AudioRecorder/>}
       </div>
+    </div>
     </div>
   );
 };
